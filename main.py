@@ -8,6 +8,16 @@ def checkPassword():
     validPassword = validatePassword(password)
     if not validPassword:
         return
+    score = calculateScore(password)
+    strength = ""
+    if score <= 0:
+        strength = "weak"
+    elif score <= 20:
+        strength = "medium"
+    else:
+        strength = "strong"
+    
+    print("Your password's score is " + str(score) + ", and the strength is " + strength + ".")
 
 def validatePassword(password):
     if len(password) in range(8, 25):
