@@ -22,7 +22,79 @@ def validatePassword(password):
     return True
 
 def calculateScore(password):
-    pass
+    score = len(password)
+    containsAllDifferentTypesOfCharacter = True
+    
+    # checking for a lowercase
+    found = False
+    for char in password:
+        if char in string.ascii_lowercase:
+            score += 5
+            found = True
+            break
+    containsAllDifferentTypesOfCharacter = containsAllDifferentTypesOfCharacter and found
+    
+    # checking for an uppercase
+    found = False
+    for char in password:
+        if char in string.ascii_uppercase:
+            score += 5
+            found = True
+            break
+    containsAllDifferentTypesOfCharacter = containsAllDifferentTypesOfCharacter and found
+
+    # checking for a digit
+    found = False
+    for char in password:
+        if char in string.digits:
+            score += 5
+            found = True
+            break
+    containsAllDifferentTypesOfCharacter = containsAllDifferentTypesOfCharacter and found
+
+    # checking for a symbol
+    found = False
+    for char in password:
+        if char in "!$%^&*()-_=+":
+            score += 5
+            found = True
+            break
+    containsAllDifferentTypesOfCharacter = containsAllDifferentTypesOfCharacter and found
+
+    if containsAllDifferentTypesOfCharacter:
+        score += 10
+
+    onlyLetters = True
+    for char in password:
+        if char not in string.ascii_letters:
+            onlyLetters = False
+            break
+    if onlyLetters:
+        score -= 5
+    
+    onlyDigits = True
+    for char in password:
+        if char not in string.digits:
+            onlyLetters = False
+            break
+    if onlyDigits:
+        score -= 5
+    
+    onlySymbols = True
+    for char in password:
+        if char not in string.digits:
+            onlySymbols = False
+            break
+    if onlySymbols:
+        score -= 5
+    
+    qwerty = ["qwertyuiop", "asdfghjkl", "zxcvbnm"]
+    for i in range(len(password - 2)):
+        for row in qwerty:
+            if password[i:i+3] in row:
+                score -= 5
+    
+    return score
 
 def generatePassword():
     pass
