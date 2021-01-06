@@ -1,5 +1,6 @@
 import os
 import string
+import random
 
 clear = lambda: os.system('cls' if os.name=='nt' else 'clear')
 
@@ -31,44 +32,40 @@ def validatePassword(password):
         return False
     return True
 
+def checkPasswordFor(password, searchString):
+    found = False
+    for char in password:
+        if char in searchString:
+            found = True
+            break
+    return found
+
 def calculateScore(password):
     score = len(password)
     containsAllDifferentTypesOfCharacter = True
-    
+
     # checking for a lowercase
-    found = False
-    for char in password:
-        if char in string.ascii_lowercase:
-            score += 5
-            found = True
-            break
+    found = checkPasswordFor(password, string.ascii_lowercase)
+    if found:
+        score += 5
     containsAllDifferentTypesOfCharacter = containsAllDifferentTypesOfCharacter and found
     
     # checking for an uppercase
-    found = False
-    for char in password:
-        if char in string.ascii_uppercase:
-            score += 5
-            found = True
-            break
+    found = checkPasswordFor(password, string.ascii_uppercase)
+    if found:
+        score += 5
     containsAllDifferentTypesOfCharacter = containsAllDifferentTypesOfCharacter and found
 
     # checking for a digit
-    found = False
-    for char in password:
-        if char in string.digits:
-            score += 5
-            found = True
-            break
+    found = checkPasswordFor(password, string.digits)
+    if found:
+        score += 5
     containsAllDifferentTypesOfCharacter = containsAllDifferentTypesOfCharacter and found
 
     # checking for a symbol
-    found = False
-    for char in password:
-        if char in "!$%^&*()-_=+":
-            score += 5
-            found = True
-            break
+    found = checkPasswordFor(password, "!$%^&*()-_=+")
+    if found:
+        score += 5
     containsAllDifferentTypesOfCharacter = containsAllDifferentTypesOfCharacter and found
 
     if containsAllDifferentTypesOfCharacter:
@@ -85,7 +82,7 @@ def calculateScore(password):
     onlyDigits = True
     for char in password:
         if char not in string.digits:
-            onlyLetters = False
+            onlyDigits = False
             break
     if onlyDigits:
         score -= 5
@@ -99,7 +96,7 @@ def calculateScore(password):
         score -= 5
     
     qwerty = ["qwertyuiop", "asdfghjkl", "zxcvbnm"]
-    for i in range(len(password - 2)):
+    for i in range(len(password) - 2):
         for row in qwerty:
             if password[i:i+3] in row:
                 score -= 5
@@ -107,7 +104,15 @@ def calculateScore(password):
     return score
 
 def generatePassword():
-    pass
+    password = ""
+    length = random.randint(8, 12)
+    score = 0
+    while score <= 20:
+        password = ""
+        for i in range(length):
+           password += random.choice(list(string.ascii_letters + string.digits + "!$%^&*()-_=+"))
+        score = calculateScore(password)
+    print("Your password is " + password + ", and its score is " + str(score) + ".")
 
 def displayMenu():
     clear()
@@ -129,14 +134,12 @@ def displayMenu():
         print("Please enter a 1, 2 or 3.")
         
     if choice == 1:
-        print("checking password")
         checkPassword()
     elif choice == 2:
-        print("generating password")
         generatePassword()
     else:
         exit()
-    input("Press enter to return to the menu")
+    input("Press enter to return to the menu...")
     displayMenu()
 
 displayMenu()
