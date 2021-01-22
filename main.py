@@ -121,15 +121,10 @@ def displayMenu():
     print("2. Generate password")
     print("3. Quit")
 
-    choice = 0
     while True:
         choice = input("Pick an option (1/2/3): ")
-        try:
-            choice = int(choice)
-            if choice in [1, 2, 3]:
-                break
-        except:
-            pass
+        if choice in ["1", "2", "3"]:
+            break
 
         print("Please enter a 1, 2 or 3.")
         
