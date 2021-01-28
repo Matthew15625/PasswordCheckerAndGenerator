@@ -5,11 +5,18 @@ import random
 clear = lambda: os.system('cls' if os.name=='nt' else 'clear')
 
 def checkPassword():
+    #Get the users password
     password = input("Enter your password: ")
+
+    #Validate the password so that it is an appropriate length and only contains allowed characters
     validPassword = validatePassword(password)
     if not validPassword:
         return
+
+    #Calculate the score of the password
     score = calculateScore(password)
+
+    #Work out the strength of the password based on the score
     strength = ""
     if score <= 0:
         strength = "weak"
@@ -107,20 +114,23 @@ def generatePassword():
     password = ""
     length = random.randint(8, 12)
     score = 0
-    while score <= 20:
+    while score <= 20: # If the score of the generated password is less than 21, generate a new one
         password = ""
         for i in range(length):
+            #Add a random character to the password
            password += random.choice(list(string.ascii_letters + string.digits + "!$%^&*()-_=+"))
         score = calculateScore(password)
     print("Your password is " + password + ", and its score is " + str(score) + ".")
 
 def displayMenu():
     clear()
+    #Printing the menu
     print("Welcome to the password checker and generator. Choose an option from the menu below")
     print("1. Check password")
     print("2. Generate password")
     print("3. Quit")
 
+    #Getting an input and validating it
     while True:
         choice = input("Pick an option (1/2/3): ")
         if choice in ["1", "2", "3"]:
